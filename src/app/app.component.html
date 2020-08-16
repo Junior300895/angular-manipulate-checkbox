@@ -1,8 +1,4 @@
-<section class="example-section">
-  <mat-checkbox class="example-margin">Check me!</mat-checkbox>
-  <mat-checkbox class="example-margin" [disabled]="true">Disabled</mat-checkbox>
-</section>
-
+<div [formGroup]="form">
 <section class="example-section">
   <span class="example-list-section">
     <mat-checkbox class="example-margin"
@@ -14,12 +10,20 @@
   <span class="example-list-section">
     <ul>
       <li *ngFor="let subtask of task.subtasks">
-        <mat-checkbox [(ngModel)]="subtask.completed"
+        <mat-checkbox formControlName="permissions"
+                      [(ngModel)]="subtask.completed"
                       [color]="subtask.color"
-                      (ngModelChange)="updateAllComplete()">
+                      (ngModelChange)="updateAllComplete()"
+                      value="sdfsdf">                  
           {{subtask.name}}
         </mat-checkbox>
       </li>
     </ul>
   </span>
 </section>
+
+<button mat-raised-button (click)="onSubmit()">
+  Valider
+</button>
+
+</div>

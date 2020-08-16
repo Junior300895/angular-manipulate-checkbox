@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ThemePalette} from '@angular/material/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export interface Task {
   name: string;
@@ -29,15 +29,17 @@ export class AppComponent  {
     ]
   };
   form: FormGroup;
+  
   constructor(private _formBuilder: FormBuilder,){
-
+      this.form = this._formBuilder.group({
+        permissions: ['', Validators.required],
+      // etapes: this._formBuilder.array([])
+    });
   }
   allComplete: boolean = false;
 
   updateAllComplete() {
-    console.log('values : ', this.task)
     this.allComplete = this.task.subtasks != null && this.task.subtasks.every(t => t.completed);
-    console.log('every completed : ', this.task.subtasks.every(t => t.completed))
   }
   someComplete(): boolean {
     if (this.task.subtasks == null) {
@@ -52,5 +54,17 @@ export class AppComponent  {
       return;
     }
     this.task.subtasks.forEach(t => t.completed = completed);
+  }
+  getChecked(event){
+    console.log('checked value :',event.value)
+  }
+  onSubmit(){
+    this.form.value.permissions = this.task.subtasks.filter(x => x.completed === true).map(x => x.name);
+    if(this.form.value.permissions.length === 0){
+      console.log('formulaire non valide !!!')
+      return
+    }
+    console.log('values : ',this.task.subtasks.filter(x => x.completed === true).map(x => x.name));
+    console.log('form value : ', this.form.value)
   }
 }
